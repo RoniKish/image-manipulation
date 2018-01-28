@@ -2,6 +2,8 @@
 # Path is needed to access them
 from PIL import Image
 import os.path
+import math
+import turtle
 
 
 # Interface for the software
@@ -13,7 +15,8 @@ def interface():
         3: duplicate_image,
         4: diverse_image,
         5: reflect_image,
-        6: save_image
+        6: pythagoras_tree,
+        7: save_image
     }
     pick = 1
     # I used test_1.png,test_2.png as names
@@ -24,26 +27,27 @@ def interface():
         while not os.path.isfile(path):
             path = input('The file was not found, enter the name again: ')
     while pick != 0:
-        print('Please select programs 1-5 or enter 0 if u wish to exit')
+        print('Please select programs 1-8 or enter 0 if u wish to exit')
         print('1 to watch the image')
         print('2 to resize the image')
         print('3 to multiply the image')
         print('4 to diverse the image')
         print('5 to reflect the image')
-        print('6 to save the image')
-        print('7 to pick another image')
+        print('6 to create a pythagoras tree')
+        print('7 to save the image')
+        print('8 to pick another image')
         pick = int(input('your input: '))
         # In case the user wish to exit
         if pick == 0:
             break
         # In case the user wish to change the image
-        if pick == 7:
+        if pick == 8:
             if os.path.isfile('result.png'):
                 os.remove('result.png')
             path = input('Enter the file name: ')
             continue
         # In case the pick is out of bounds
-        if pick < 0 or pick > 7:
+        if pick < 0 or pick > 8:
             print('You must select a number between 0 to 2')
             continue
         menu[pick](path)
@@ -137,20 +141,20 @@ def reflect_image(path):
     else:
         image = Image.open(path)
         image.save('result.png')
-    # Decides on the reflection angle
+    # Get the image sizes
+    width, height = image.size
+    # Decides on the reflection type
     print('Enter 1 for up-down reflect')
     print('Enter 2 for left-right reflect')
-    choice = int(input('Your input'))
+    choice = int(input('Your input: '))
     while choice < 1 or choice > 2:
         choice = int(input('You must choose 1 or 2'))
     if choice == 1:
-        width, height = image.size
         box = (0, 0, width, (height * 2))
         cropped_image = image.crop(box)
         image_reflect = image.transpose(Image.FLIP_TOP_BOTTOM)
         cropped_image.paste(image_reflect, (0, height, width, (height * 2)))
     if choice == 2:
-        width, height = image.size
         box = (0, 0, (width * 2), height)
         cropped_image = image.crop(box)
         image_reflect = image.transpose(Image.FLIP_LEFT_RIGHT)
@@ -158,6 +162,51 @@ def reflect_image(path):
 
     cropped_image.save('result.png')
 
+
+# Creates a pythagoras tree using turtle library
+def pythagoras_tree(not_used):
+    max_run = int(input('Enter the number times u want the tree to run: '))
+    window = turtle.Screen()
+    # Setting the configuration of the turtle (bach)
+    bach = turtle.Turtle()
+    bach.hideturtle()
+    bach.penup()
+    bach.goto(-75, -225)
+    bach.pendown()
+    bach.speed(250)
+    bach.left(90)
+    turtle_run(bach, 1, max_run)
+    ts = bach.getscreen()
+    ts.getcanvas().postscript(file="holi.eps")
+    window.exitonclick()
+
+
+def turtle_run(bach, range, max_range):
+    if range > max_range:
+        return
+    length = 100 * ((1/math.sqrt(2))**range)
+    bach_2 = bach.clone()
+    bach.forward(length)
+    bach.right(90)
+    bach.forward(length)
+    bach.right(90)
+    bach.forward(length)
+    bach.right(90)
+    bach.forward(length)
+    bach.right(90)
+    bach.forward(length)
+    bach.left(45)
+    turtle_run(bach, range + 1, max_range)
+    bach_2.right(90)
+    bach_2.forward(length)
+    bach_2.left(90)
+    bach_2.forward(length)
+    if range != max_range:
+        bach_3 = bach_2.clone()
+        bach_3.left(45)
+        bach_3.forward(100*((math.sqrt(2)/2)**(1+range)))
+        bach_3.right(90)
+        turtle_run(bach_3, range + 1, max_range)
 
 
 interface()
