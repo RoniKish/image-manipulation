@@ -4,6 +4,7 @@ from PIL import Image
 import os.path
 import math
 import turtle
+import canvasvg
 
 
 # Interface for the software
@@ -16,7 +17,8 @@ def interface():
         4: diverse_image,
         5: reflect_image,
         6: pythagoras_tree,
-        7: save_image
+        7: koch_snowflake,
+        8: save_image
     }
     pick = 1
     # I used test_1.png,test_2.png as names
@@ -27,27 +29,28 @@ def interface():
         while not os.path.isfile(path):
             path = input('The file was not found, enter the name again: ')
     while pick != 0:
-        print('Please select programs 1-8 or enter 0 if u wish to exit')
+        print('Please select programs 1-9 or enter 0 if u wish to exit')
         print('1 to watch the image')
         print('2 to resize the image')
         print('3 to multiply the image')
         print('4 to diverse the image')
         print('5 to reflect the image')
         print('6 to create a pythagoras tree')
-        print('7 to save the image')
-        print('8 to pick another image')
+        print('7 to create a koch snowflake')
+        print('8 to save the image')
+        print('9 to pick another image')
         pick = int(input('your input: '))
         # In case the user wish to exit
         if pick == 0:
             break
         # In case the user wish to change the image
-        if pick == 8:
+        if pick == 9:
             if os.path.isfile('result.png'):
                 os.remove('result.png')
             path = input('Enter the file name: ')
             continue
         # In case the pick is out of bounds
-        if pick < 0 or pick > 8:
+        if pick < 0 or pick > 9:
             print('You must select a number between 0 to 2')
             continue
         menu[pick](path)
@@ -165,7 +168,7 @@ def reflect_image(path):
 
 # Creates a pythagoras tree using turtle library
 def pythagoras_tree(not_used):
-    max_run = int(input('Enter the number times u want the tree to run: '))
+    max_run = int(input('Enter the number of depth u want the tree to go: '))
     window = turtle.Screen()
     # Setting the configuration of the turtle (bach)
     bach = turtle.Turtle()
@@ -175,11 +178,11 @@ def pythagoras_tree(not_used):
     bach.pendown()
     bach.speed(250)
     bach.left(90)
-    turtle_run(bach, 1, max_run)
+    turtle_run_1(bach, 1, max_run)
     window.exitonclick()
 
 
-def turtle_run(bach, range, max_range):
+def turtle_run_1(bach, range, max_range):
     if range > max_range:
         return
     length = 100 * ((1/math.sqrt(2))**range)
@@ -194,7 +197,7 @@ def turtle_run(bach, range, max_range):
     bach.right(90)
     bach.forward(length)
     bach.left(45)
-    turtle_run(bach, range + 1, max_range)
+    turtle_run_1(bach, range + 1, max_range)
     bach_2.right(90)
     bach_2.forward(length)
     bach_2.left(90)
@@ -204,7 +207,37 @@ def turtle_run(bach, range, max_range):
         bach_3.left(45)
         bach_3.forward(100*((math.sqrt(2)/2)**(1+range)))
         bach_3.right(90)
-        turtle_run(bach_3, range + 1, max_range)
+        turtle_run_1(bach_3, range + 1, max_range)
+
+
+def koch_snowflake(not_used):
+    max_run = int(input('Enter the number depth u want the snowflake to run: '))
+    window = turtle.Screen()
+    # Setting the configuration of the turtle (bach)
+    bach = turtle.Turtle()
+    bach.hideturtle()
+    bach.penup()
+    bach.backward(150)
+    bach.pendown()
+    bach.speed(50)
+    for i in range(3):
+        turtle_run_2(bach, 300, max_run)
+        bach.right(120)
+    window.exitonclick()
+
+
+def turtle_run_2(bach, range, m):
+    if m == 0:
+        bach.forward(range)
+        return
+    range /= 3.0
+    turtle_run_2(bach, range, m - 1)
+    bach.left(60)
+    turtle_run_2(bach, range, m - 1)
+    bach.right(120)
+    turtle_run_2(bach, range, m - 1)
+    bach.left(60)
+    turtle_run_2(bach, range, m - 1)
 
 
 interface()
