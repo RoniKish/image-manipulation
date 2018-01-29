@@ -176,8 +176,6 @@ def pythagoras_tree(not_used):
     bach.speed(250)
     bach.left(90)
     turtle_run(bach, 1, max_run)
-    ts = bach.getscreen()
-    ts.getcanvas().postscript(file="holi.eps")
     window.exitonclick()
 
 
