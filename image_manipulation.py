@@ -24,6 +24,8 @@ def interface():
     # I used test_1.png,test_2.png as names
     print('Welcome to my testing software ^^')
     path = input('Enter the file name: ')
+    if path == '0':
+        exit()
     # In case the file was not found
     if not os.path.isfile(path):
         while not os.path.isfile(path):
