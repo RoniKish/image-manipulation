@@ -182,6 +182,7 @@ def pythagoras_tree(not_used):
     bach.left(90)
     turtle_run_1(bach, 1, max_run)
     window.exitonclick()
+    turtle.TurtleScreen._RUNNING = True
 
 
 def turtle_run_1(bach, range, max_range):
@@ -226,6 +227,7 @@ def koch_snowflake(not_used):
         turtle_run_2(bach, 300, max_run)
         bach.right(120)
     window.exitonclick()
+    turtle.TurtleScreen._RUNNING = True
 
 
 def turtle_run_2(bach, range, m):
