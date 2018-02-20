@@ -21,20 +21,22 @@ def interface():
         8: save_image
     }
     pick = 1
-    # I used test_1.png,test_2.png as names
+    # You can press 0 at start to Exit
     print('Welcome to my testing software ^^')
     path = input('Enter the file name: ')
     if path == '0':
-        exit()
+        return
     # In case the file was not found
     if not os.path.isfile(path):
         while not os.path.isfile(path):
             path = input('The file was not found, enter the name again: ')
+            if path == '0':
+                return
     while pick != 0:
         print('Please select programs 1-9 or enter 0 if u wish to exit')
         print('1 to watch the image')
         print('2 to resize the image')
-        print('3 to multiply the image')
+        print('3 to multiply by power the image')
         print('4 to diverse the image')
         print('5 to reflect the image')
         print('6 to create a pythagoras tree')
@@ -58,6 +60,7 @@ def interface():
         menu[pick](path)
 
 
+# Duplicates an image in the power of 2
 def duplicate_image(path):
     # If the image was already changed open the changed version, other wise create a result file
     if os.path.isfile('result.png'):
@@ -86,6 +89,7 @@ def duplicate_image(path):
         image_copy.save('result.png')
 
 
+# Resize the image width and height
 def resize_image(path):
     # If the image was already changed open the changed version, other wise create a result file
     if os.path.isfile('result.png'):
@@ -101,6 +105,7 @@ def resize_image(path):
     new_image.save('result.png')
 
 
+# Shows the image
 def show_image(path):
     if os.path.isfile('result.png'):
         image = Image.open('result.png')
@@ -109,6 +114,7 @@ def show_image(path):
     image.show()
 
 
+# Diverse the image in the power of 2
 def diverse_image(path):
     # If the image was already changed open the changed version, other wise create a result file
     if os.path.isfile('result.png'):
@@ -128,6 +134,7 @@ def diverse_image(path):
         cropped_image.save('result.png')
 
 
+# Saves the image in the file folder as a PNG image
 def save_image(path):
     # If the image was already changed open the changed version, other wise create a result file
     if os.path.isfile('result.png'):
@@ -139,6 +146,7 @@ def save_image(path):
     image.save(name)
 
 
+# Reflects the image up-down or left-right
 def reflect_image(path):
     # If the image was already changed open the changed version, other wise create a result file
     if os.path.isfile('result.png'):
@@ -168,7 +176,7 @@ def reflect_image(path):
     cropped_image.save('result.png')
 
 
-# Creates a pythagoras tree using turtle library
+# Creates a pythagoras tree by the chosen depth
 def pythagoras_tree(not_used):
     max_run = int(input('Enter the number of depth u want the tree to go: '))
     window = turtle.Screen()
@@ -185,6 +193,7 @@ def pythagoras_tree(not_used):
     turtle.TurtleScreen._RUNNING = True
 
 
+# The turtle commands for creating pythagoras tree
 def turtle_run_1(bach, range, max_range):
     if range > max_range:
         return
@@ -213,6 +222,7 @@ def turtle_run_1(bach, range, max_range):
         turtle_run_1(bach_3, range + 1, max_range)
 
 
+# Creates a koch snowflake by the chosen depth
 def koch_snowflake(not_used):
     max_run = int(input('Enter the number depth u want the snowflake to run: '))
     window = turtle.Screen()
@@ -230,6 +240,7 @@ def koch_snowflake(not_used):
     turtle.TurtleScreen._RUNNING = True
 
 
+# The turtle commands for Creating koch snowflake
 def turtle_run_2(bach, range, m):
     if m == 0:
         bach.forward(range)
@@ -244,7 +255,11 @@ def turtle_run_2(bach, range, m):
     turtle_run_2(bach, range, m - 1)
 
 
-interface()
+# Main + deletes the temp result.png file at end
+try:
+    interface()
 # Deletes the changed image
+except ValueError:
+    print("An error occurred during the run, which caused a stop")
 if os.path.isfile('result.png'):
     os.remove('result.png')
